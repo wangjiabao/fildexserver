@@ -3,6 +3,7 @@ package data
 import (
 	"dhb/app/app/internal/biz"
 	"encoding/json"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	"io"
 	"io/ioutil"
@@ -60,7 +61,7 @@ func (k *KLineMOneRepo) RequestBinanceMinuteKLinesData(symbol string, startTime 
 		Timeout: 30 * time.Second,
 	}
 
-	//fmt.Println(u.String())
+	fmt.Println(u.String())
 	resp, err := client.Get(u.String())
 	if err != nil {
 		return nil, err
@@ -77,6 +78,7 @@ func (k *KLineMOneRepo) RequestBinanceMinuteKLinesData(symbol string, startTime 
 		return nil, err
 	}
 
+	fmt.Println(string(b))
 	var i [][]interface{}
 	err = json.Unmarshal(b, &i)
 	if err != nil {
