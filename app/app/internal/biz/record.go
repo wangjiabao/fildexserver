@@ -164,7 +164,7 @@ func (ruc *RecordUseCase) SetPerSecondDFilTotal(ctx context.Context, totalSupply
 		err error
 	)
 	now := time.Now().UTC()
-	timestamp := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, time.UTC).Add(8 * time.Hour).Unix()
+	timestamp := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, time.UTC).Unix()
 
 	err = ruc.dfilInfoRepo.SetDFilInfo(ctx, totalSupply, timestamp)
 	if nil != err {
@@ -179,7 +179,7 @@ func (ruc *RecordUseCase) SetPerSecondPairInfo(ctx context.Context, pair string,
 		err error
 	)
 	now := time.Now().UTC()
-	timestamp := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, time.UTC).Add(8 * time.Hour).Unix()
+	timestamp := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, time.UTC).Unix()
 
 	err = ruc.pairInfoRepo.SetPairInfo(ctx, pair, reserve0, reserve1, timestamp)
 	if nil != err {
