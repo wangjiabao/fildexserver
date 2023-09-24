@@ -23,6 +23,11 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AppClient interface {
 	FilUsdt(ctx context.Context, in *FilUsdtRequest, opts ...grpc.CallOption) (*FilUsdtReply, error)
+	SetPerSecondDFilTotal(ctx context.Context, in *SetPerSecondDFilTotalRequest, opts ...grpc.CallOption) (*SetPerSecondDFilTotalReply, error)
+	GetPerSecondDFilTotal(ctx context.Context, in *GetPerSecondDFilTotalRequest, opts ...grpc.CallOption) (*GetPerSecondDFilTotalReply, error)
+	SetPerSecondPairInfo(ctx context.Context, in *SetPerSecondPairInfoRequest, opts ...grpc.CallOption) (*SetPerSecondPairInfoReply, error)
+	GetPerSecondPairInfo(ctx context.Context, in *GetPerSecondPairInfoRequest, opts ...grpc.CallOption) (*GetPerSecondPairInfoReply, error)
+	ReqContract(ctx context.Context, in *ReqContractRequest, opts ...grpc.CallOption) (*ReqContractReply, error)
 }
 
 type appClient struct {
@@ -42,11 +47,61 @@ func (c *appClient) FilUsdt(ctx context.Context, in *FilUsdtRequest, opts ...grp
 	return out, nil
 }
 
+func (c *appClient) SetPerSecondDFilTotal(ctx context.Context, in *SetPerSecondDFilTotalRequest, opts ...grpc.CallOption) (*SetPerSecondDFilTotalReply, error) {
+	out := new(SetPerSecondDFilTotalReply)
+	err := c.cc.Invoke(ctx, "/api.App/SetPerSecondDFilTotal", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) GetPerSecondDFilTotal(ctx context.Context, in *GetPerSecondDFilTotalRequest, opts ...grpc.CallOption) (*GetPerSecondDFilTotalReply, error) {
+	out := new(GetPerSecondDFilTotalReply)
+	err := c.cc.Invoke(ctx, "/api.App/GetPerSecondDFilTotal", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) SetPerSecondPairInfo(ctx context.Context, in *SetPerSecondPairInfoRequest, opts ...grpc.CallOption) (*SetPerSecondPairInfoReply, error) {
+	out := new(SetPerSecondPairInfoReply)
+	err := c.cc.Invoke(ctx, "/api.App/SetPerSecondPairInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) GetPerSecondPairInfo(ctx context.Context, in *GetPerSecondPairInfoRequest, opts ...grpc.CallOption) (*GetPerSecondPairInfoReply, error) {
+	out := new(GetPerSecondPairInfoReply)
+	err := c.cc.Invoke(ctx, "/api.App/GetPerSecondPairInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) ReqContract(ctx context.Context, in *ReqContractRequest, opts ...grpc.CallOption) (*ReqContractReply, error) {
+	out := new(ReqContractReply)
+	err := c.cc.Invoke(ctx, "/api.App/ReqContract", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppServer is the server API for App service.
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
 type AppServer interface {
 	FilUsdt(context.Context, *FilUsdtRequest) (*FilUsdtReply, error)
+	SetPerSecondDFilTotal(context.Context, *SetPerSecondDFilTotalRequest) (*SetPerSecondDFilTotalReply, error)
+	GetPerSecondDFilTotal(context.Context, *GetPerSecondDFilTotalRequest) (*GetPerSecondDFilTotalReply, error)
+	SetPerSecondPairInfo(context.Context, *SetPerSecondPairInfoRequest) (*SetPerSecondPairInfoReply, error)
+	GetPerSecondPairInfo(context.Context, *GetPerSecondPairInfoRequest) (*GetPerSecondPairInfoReply, error)
+	ReqContract(context.Context, *ReqContractRequest) (*ReqContractReply, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -56,6 +111,21 @@ type UnimplementedAppServer struct {
 
 func (UnimplementedAppServer) FilUsdt(context.Context, *FilUsdtRequest) (*FilUsdtReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FilUsdt not implemented")
+}
+func (UnimplementedAppServer) SetPerSecondDFilTotal(context.Context, *SetPerSecondDFilTotalRequest) (*SetPerSecondDFilTotalReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetPerSecondDFilTotal not implemented")
+}
+func (UnimplementedAppServer) GetPerSecondDFilTotal(context.Context, *GetPerSecondDFilTotalRequest) (*GetPerSecondDFilTotalReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPerSecondDFilTotal not implemented")
+}
+func (UnimplementedAppServer) SetPerSecondPairInfo(context.Context, *SetPerSecondPairInfoRequest) (*SetPerSecondPairInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetPerSecondPairInfo not implemented")
+}
+func (UnimplementedAppServer) GetPerSecondPairInfo(context.Context, *GetPerSecondPairInfoRequest) (*GetPerSecondPairInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPerSecondPairInfo not implemented")
+}
+func (UnimplementedAppServer) ReqContract(context.Context, *ReqContractRequest) (*ReqContractReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReqContract not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
 
@@ -88,6 +158,96 @@ func _App_FilUsdt_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _App_SetPerSecondDFilTotal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetPerSecondDFilTotalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).SetPerSecondDFilTotal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/SetPerSecondDFilTotal",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).SetPerSecondDFilTotal(ctx, req.(*SetPerSecondDFilTotalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_GetPerSecondDFilTotal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPerSecondDFilTotalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).GetPerSecondDFilTotal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/GetPerSecondDFilTotal",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).GetPerSecondDFilTotal(ctx, req.(*GetPerSecondDFilTotalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_SetPerSecondPairInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetPerSecondPairInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).SetPerSecondPairInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/SetPerSecondPairInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).SetPerSecondPairInfo(ctx, req.(*SetPerSecondPairInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_GetPerSecondPairInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPerSecondPairInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).GetPerSecondPairInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/GetPerSecondPairInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).GetPerSecondPairInfo(ctx, req.(*GetPerSecondPairInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_ReqContract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReqContractRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).ReqContract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/ReqContract",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).ReqContract(ctx, req.(*ReqContractRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // App_ServiceDesc is the grpc.ServiceDesc for App service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +258,26 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FilUsdt",
 			Handler:    _App_FilUsdt_Handler,
+		},
+		{
+			MethodName: "SetPerSecondDFilTotal",
+			Handler:    _App_SetPerSecondDFilTotal_Handler,
+		},
+		{
+			MethodName: "GetPerSecondDFilTotal",
+			Handler:    _App_GetPerSecondDFilTotal_Handler,
+		},
+		{
+			MethodName: "SetPerSecondPairInfo",
+			Handler:    _App_SetPerSecondPairInfo_Handler,
+		},
+		{
+			MethodName: "GetPerSecondPairInfo",
+			Handler:    _App_GetPerSecondPairInfo_Handler,
+		},
+		{
+			MethodName: "ReqContract",
+			Handler:    _App_ReqContract_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

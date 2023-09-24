@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	v1 "dhb/app/app/api"
 	"github.com/go-kratos/kratos/v2/log"
 	"time"
 )
@@ -35,6 +36,20 @@ type GlobalLock struct {
 	Status int64
 }
 
+type PairInfoPerSecond struct {
+	ID        int64
+	Pair      string
+	Reserve0  string
+	Reserve1  string
+	Timestamp int64
+}
+
+type DFilInfoPerSecond struct {
+	ID          int64
+	TotalSupply string
+	Timestamp   int64
+}
+
 type RecordUseCase struct {
 	ethUserRecordRepo             EthUserRecordRepo
 	userRecommendRepo             UserRecommendRepo
@@ -43,6 +58,8 @@ type RecordUseCase struct {
 	userBalanceRepo               UserBalanceRepo
 	userInfoRepo                  UserInfoRepo
 	userCurrentMonthRecommendRepo UserCurrentMonthRecommendRepo
+	pairInfoRepo                  PairInfoRepo
+	dfilInfoRepo                  DFilInfoRepo
 	tx                            Transaction
 	log                           *log.Helper
 }
@@ -77,6 +94,16 @@ type LocationRepo interface {
 	GetMyStopLocationsLast(ctx context.Context, userId int64) ([]*LocationNew, error)
 }
 
+type PairInfoRepo interface {
+	SetPairInfo(ctx context.Context, pair string, reserve0 string, reserve1 string, timestamp int64) error
+	GetPairInfoByTime(pair string, start int64, end int64) ([]*PairInfoPerSecond, error)
+}
+
+type DFilInfoRepo interface {
+	SetDFilInfo(ctx context.Context, totalSupply string, timestamp int64) error
+	GetDFilInfoByTime(start int64, end int64) ([]*DFilInfoPerSecond, error)
+}
+
 func NewRecordUseCase(
 	ethUserRecordRepo EthUserRecordRepo,
 	locationRepo LocationRepo,
@@ -85,6 +112,8 @@ func NewRecordUseCase(
 	userInfoRepo UserInfoRepo,
 	configRepo ConfigRepo,
 	userCurrentMonthRecommendRepo UserCurrentMonthRecommendRepo,
+	pairInfoRepo PairInfoRepo,
+	dfilInfoRepo DFilInfoRepo,
 	tx Transaction,
 	logger log.Logger) *RecordUseCase {
 	return &RecordUseCase{
@@ -95,6 +124,8 @@ func NewRecordUseCase(
 		userBalanceRepo:               userBalanceRepo,
 		userCurrentMonthRecommendRepo: userCurrentMonthRecommendRepo,
 		userInfoRepo:                  userInfoRepo,
+		pairInfoRepo:                  pairInfoRepo,
+		dfilInfoRepo:                  dfilInfoRepo,
 		tx:                            tx,
 		log:                           log.NewHelper(logger),
 	}
@@ -126,4 +157,105 @@ func (ruc *RecordUseCase) LockEthUserRecordHandle(ctx context.Context, ethUserRe
 
 func (ruc *RecordUseCase) UnLockEthUserRecordHandle(ctx context.Context, ethUserRecord ...*EthUserRecord) (bool, error) {
 	return ruc.locationRepo.UnLockGlobalLocation(ctx)
+}
+
+func (ruc *RecordUseCase) SetPerSecondDFilTotal(ctx context.Context, totalSupply string) (*v1.SetPerSecondDFilTotalReply, error) {
+	var (
+		err error
+	)
+	now := time.Now().UTC()
+	timestamp := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, time.UTC).Add(8 * time.Hour).Unix()
+
+	err = ruc.dfilInfoRepo.SetDFilInfo(ctx, totalSupply, timestamp)
+	if nil != err {
+		return nil, err
+	}
+
+	return &v1.SetPerSecondDFilTotalReply{}, nil
+}
+
+func (ruc *RecordUseCase) SetPerSecondPairInfo(ctx context.Context, pair string, reserve0 string, reserve1 string) (*v1.SetPerSecondPairInfoReply, error) {
+	var (
+		err error
+	)
+	now := time.Now().UTC()
+	timestamp := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, time.UTC).Add(8 * time.Hour).Unix()
+
+	err = ruc.pairInfoRepo.SetPairInfo(ctx, pair, reserve0, reserve1, timestamp)
+	if nil != err {
+		return nil, err
+	}
+
+	return &v1.SetPerSecondPairInfoReply{}, nil
+}
+
+func (ruc *RecordUseCase) GetPerSecondPairInfo(ctx context.Context, req *v1.GetPerSecondPairInfoRequest) (*v1.GetPerSecondPairInfoReply, error) {
+	var (
+		pairInfos []*PairInfoPerSecond
+		endTime   int64
+		startTime int64
+		err       error
+	)
+
+	resPairInfos := &v1.GetPerSecondPairInfoReply{DataListPair: make([]*v1.GetPerSecondPairInfoReply_ListPair, 0)}
+
+	if req.StartTime > req.EndTime {
+		return resPairInfos, nil
+	}
+
+	startTime = req.StartTime
+	endTime = req.EndTime
+	if req.StartTime+43200 < req.EndTime {
+		endTime = req.StartTime + 43200
+	}
+
+	pairInfos, err = ruc.pairInfoRepo.GetPairInfoByTime(req.Pair, startTime, endTime)
+	if nil != err {
+		return nil, err
+	}
+
+	for _, v := range pairInfos {
+		resPairInfos.DataListPair = append(resPairInfos.DataListPair, &v1.GetPerSecondPairInfoReply_ListPair{
+			Time:     v.Timestamp,
+			Reserve0: v.Reserve0,
+			Reserve1: v.Reserve1,
+		})
+	}
+
+	return resPairInfos, nil
+}
+
+func (ruc *RecordUseCase) GetPerSecondDFilTotal(ctx context.Context, req *v1.GetPerSecondDFilTotalRequest) (*v1.GetPerSecondDFilTotalReply, error) {
+	var (
+		dfilInfos []*DFilInfoPerSecond
+		endTime   int64
+		startTime int64
+		err       error
+	)
+
+	resDFilInfos := &v1.GetPerSecondDFilTotalReply{DataListDFil: make([]*v1.GetPerSecondDFilTotalReply_ListDfil, 0)}
+
+	if req.StartTime > req.EndTime {
+		return resDFilInfos, nil
+	}
+
+	startTime = req.StartTime
+	endTime = req.EndTime
+	if req.StartTime+43200 < req.EndTime {
+		endTime = req.StartTime + 43200
+	}
+
+	dfilInfos, err = ruc.dfilInfoRepo.GetDFilInfoByTime(startTime, endTime)
+	if nil != err {
+		return nil, err
+	}
+
+	for _, v := range dfilInfos {
+		resDFilInfos.DataListDFil = append(resDFilInfos.DataListDFil, &v1.GetPerSecondDFilTotalReply_ListDfil{
+			Time:        v.Timestamp,
+			TotalSupply: v.TotalSupply,
+		})
+	}
+
+	return resDFilInfos, nil
 }

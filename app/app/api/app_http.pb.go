@@ -20,14 +20,29 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationAppFilUsdt = "/api.App/FilUsdt"
+const OperationAppGetPerSecondDFilTotal = "/api.App/GetPerSecondDFilTotal"
+const OperationAppGetPerSecondPairInfo = "/api.App/GetPerSecondPairInfo"
+const OperationAppReqContract = "/api.App/ReqContract"
+const OperationAppSetPerSecondDFilTotal = "/api.App/SetPerSecondDFilTotal"
+const OperationAppSetPerSecondPairInfo = "/api.App/SetPerSecondPairInfo"
 
 type AppHTTPServer interface {
 	FilUsdt(context.Context, *FilUsdtRequest) (*FilUsdtReply, error)
+	GetPerSecondDFilTotal(context.Context, *GetPerSecondDFilTotalRequest) (*GetPerSecondDFilTotalReply, error)
+	GetPerSecondPairInfo(context.Context, *GetPerSecondPairInfoRequest) (*GetPerSecondPairInfoReply, error)
+	ReqContract(context.Context, *ReqContractRequest) (*ReqContractReply, error)
+	SetPerSecondDFilTotal(context.Context, *SetPerSecondDFilTotalRequest) (*SetPerSecondDFilTotalReply, error)
+	SetPerSecondPairInfo(context.Context, *SetPerSecondPairInfoRequest) (*SetPerSecondPairInfoReply, error)
 }
 
 func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r := s.Route("/")
 	r.GET("/api/app_server/fil_usdt", _App_FilUsdt0_HTTP_Handler(srv))
+	r.GET("/api/app_server/set_per_second_dfil_total", _App_SetPerSecondDFilTotal0_HTTP_Handler(srv))
+	r.GET("/api/app_server/get_per_second_dfil_total", _App_GetPerSecondDFilTotal0_HTTP_Handler(srv))
+	r.GET("/api/app_server/set_per_second_pair_info", _App_SetPerSecondPairInfo0_HTTP_Handler(srv))
+	r.GET("/api/app_server/get_per_second_pair_info", _App_GetPerSecondPairInfo0_HTTP_Handler(srv))
+	r.GET("/api/app_server/req_contract", _App_ReqContract0_HTTP_Handler(srv))
 }
 
 func _App_FilUsdt0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
@@ -49,8 +64,108 @@ func _App_FilUsdt0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error 
 	}
 }
 
+func _App_SetPerSecondDFilTotal0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SetPerSecondDFilTotalRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppSetPerSecondDFilTotal)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SetPerSecondDFilTotal(ctx, req.(*SetPerSecondDFilTotalRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SetPerSecondDFilTotalReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_GetPerSecondDFilTotal0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetPerSecondDFilTotalRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppGetPerSecondDFilTotal)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetPerSecondDFilTotal(ctx, req.(*GetPerSecondDFilTotalRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetPerSecondDFilTotalReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_SetPerSecondPairInfo0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SetPerSecondPairInfoRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppSetPerSecondPairInfo)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SetPerSecondPairInfo(ctx, req.(*SetPerSecondPairInfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SetPerSecondPairInfoReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_GetPerSecondPairInfo0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetPerSecondPairInfoRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppGetPerSecondPairInfo)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetPerSecondPairInfo(ctx, req.(*GetPerSecondPairInfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetPerSecondPairInfoReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_ReqContract0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ReqContractRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppReqContract)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ReqContract(ctx, req.(*ReqContractRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ReqContractReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type AppHTTPClient interface {
 	FilUsdt(ctx context.Context, req *FilUsdtRequest, opts ...http.CallOption) (rsp *FilUsdtReply, err error)
+	GetPerSecondDFilTotal(ctx context.Context, req *GetPerSecondDFilTotalRequest, opts ...http.CallOption) (rsp *GetPerSecondDFilTotalReply, err error)
+	GetPerSecondPairInfo(ctx context.Context, req *GetPerSecondPairInfoRequest, opts ...http.CallOption) (rsp *GetPerSecondPairInfoReply, err error)
+	ReqContract(ctx context.Context, req *ReqContractRequest, opts ...http.CallOption) (rsp *ReqContractReply, err error)
+	SetPerSecondDFilTotal(ctx context.Context, req *SetPerSecondDFilTotalRequest, opts ...http.CallOption) (rsp *SetPerSecondDFilTotalReply, err error)
+	SetPerSecondPairInfo(ctx context.Context, req *SetPerSecondPairInfoRequest, opts ...http.CallOption) (rsp *SetPerSecondPairInfoReply, err error)
 }
 
 type AppHTTPClientImpl struct {
@@ -66,6 +181,71 @@ func (c *AppHTTPClientImpl) FilUsdt(ctx context.Context, in *FilUsdtRequest, opt
 	pattern := "/api/app_server/fil_usdt"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAppFilUsdt))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) GetPerSecondDFilTotal(ctx context.Context, in *GetPerSecondDFilTotalRequest, opts ...http.CallOption) (*GetPerSecondDFilTotalReply, error) {
+	var out GetPerSecondDFilTotalReply
+	pattern := "/api/app_server/get_per_second_dfil_total"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppGetPerSecondDFilTotal))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) GetPerSecondPairInfo(ctx context.Context, in *GetPerSecondPairInfoRequest, opts ...http.CallOption) (*GetPerSecondPairInfoReply, error) {
+	var out GetPerSecondPairInfoReply
+	pattern := "/api/app_server/get_per_second_pair_info"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppGetPerSecondPairInfo))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) ReqContract(ctx context.Context, in *ReqContractRequest, opts ...http.CallOption) (*ReqContractReply, error) {
+	var out ReqContractReply
+	pattern := "/api/app_server/req_contract"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppReqContract))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) SetPerSecondDFilTotal(ctx context.Context, in *SetPerSecondDFilTotalRequest, opts ...http.CallOption) (*SetPerSecondDFilTotalReply, error) {
+	var out SetPerSecondDFilTotalReply
+	pattern := "/api/app_server/set_per_second_dfil_total"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppSetPerSecondDFilTotal))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) SetPerSecondPairInfo(ctx context.Context, in *SetPerSecondPairInfoRequest, opts ...http.CallOption) (*SetPerSecondPairInfoReply, error) {
+	var out SetPerSecondPairInfoReply
+	pattern := "/api/app_server/set_per_second_pair_info"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppSetPerSecondPairInfo))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

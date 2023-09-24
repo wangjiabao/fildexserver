@@ -50,6 +50,11 @@ func NewHTTPServer(c *conf.Server, app *service.AppService, logger log.Logger) *
 func NewWhiteListMatcher() selector.MatchFunc {
 	whiteList := make(map[string]struct{})
 	whiteList["/api.App/FilUsdt"] = struct{}{}
+	whiteList["/api.App/SetPerSecondDFilTotal"] = struct{}{}
+	whiteList["/api.App/GetPerSecondDFilTotal"] = struct{}{}
+	whiteList["/api.App/SetPerSecondPairInfo"] = struct{}{}
+	whiteList["/api.App/GetPerSecondPairInfo"] = struct{}{}
+	whiteList["/api.App/ReqContract"] = struct{}{}
 	//whiteList["/api.App/PasswordChange"] = struct{}{}
 	//whiteList["/api.App/TokenWithdraw"] = struct{}{}
 	//whiteList["/api.App/GetTrade"] = struct{}{}

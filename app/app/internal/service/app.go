@@ -6,19 +6,13 @@ import (
 	v1 "dhb/app/app/api"
 	"dhb/app/app/internal/biz"
 	"dhb/app/app/internal/conf"
-	"encoding/json"
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/go-kratos/kratos/v2/log"
-	"io"
-	"io/ioutil"
 	"math/big"
-	"net/http"
-	"net/url"
-	"time"
 )
 
 // AppService service.
@@ -26,17 +20,59 @@ type AppService struct {
 	v1.UnimplementedAppServer
 
 	bduc *biz.BinanceDataUsecase
+	ruc  *biz.RecordUseCase
 	log  *log.Helper
 	ca   *conf.Auth
 }
 
 // NewAppService new a service.
-func NewAppService(bduc *biz.BinanceDataUsecase, logger log.Logger, ca *conf.Auth) *AppService {
-	return &AppService{bduc: bduc, log: log.NewHelper(logger), ca: ca}
+func NewAppService(bduc *biz.BinanceDataUsecase, ruc *biz.RecordUseCase, logger log.Logger, ca *conf.Auth) *AppService {
+	return &AppService{bduc: bduc, ruc: ruc, log: log.NewHelper(logger), ca: ca}
 }
 
 func (a *AppService) FilUsdt(ctx context.Context, req *v1.FilUsdtRequest) (*v1.FilUsdtReply, error) {
 	return a.bduc.FilUsdt(ctx, req)
+}
+
+func (a *AppService) SetPerSecondDFilTotal(ctx context.Context, req *v1.SetPerSecondDFilTotalRequest) (*v1.SetPerSecondDFilTotalReply, error) {
+	var (
+		totalSupply string
+		err         error
+	)
+
+	totalSupply, err = GetDFilTotalSupply()
+	if nil != err {
+		return nil, err
+	}
+
+	return a.ruc.SetPerSecondDFilTotal(ctx, totalSupply)
+}
+
+func (a *AppService) GetPerSecondDFilTotal(ctx context.Context, req *v1.GetPerSecondDFilTotalRequest) (*v1.GetPerSecondDFilTotalReply, error) {
+	return a.ruc.GetPerSecondDFilTotal(ctx, req)
+}
+
+func (a *AppService) SetPerSecondPairInfo(ctx context.Context, req *v1.SetPerSecondPairInfoRequest) (*v1.SetPerSecondPairInfoReply, error) {
+	var (
+		reserve0 string
+		reserve1 string
+		err      error
+	)
+
+	reserve0, reserve1, err = GetReserves("0xb160f026bA4B5da6dcC2e55aD4c9Cfb426084d93")
+	if nil != err {
+		return nil, err
+	}
+
+	return a.ruc.SetPerSecondPairInfo(ctx, "0xb160f026bA4B5da6dcC2e55aD4c9Cfb426084d93", reserve0, reserve1)
+}
+
+func (a *AppService) GetPerSecondPairInfo(ctx context.Context, req *v1.GetPerSecondPairInfoRequest) (*v1.GetPerSecondPairInfoReply, error) {
+	return a.ruc.GetPerSecondPairInfo(ctx, req)
+}
+
+func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest) (*v1.ReqContractReply, error) {
+	return nil, nil
 }
 
 //func (a *AppService) GetTrade(ctx context.Context, req *v1.GetTradeRequest) (*v1.GetTradeReply, error) {
@@ -182,6 +218,72 @@ func tokenWithdraw(requestUrl string, chainId int64) (bool, error) {
 	return true, nil
 }
 
+func GetReserves(address string) (string, string, error) {
+	var (
+		balAString string
+		balBString string
+	)
+
+	url1 := "https://api.node.glif.io"
+
+	for i := 1; i < 5; i++ {
+		client, err := ethclient.Dial(url1)
+		if err != nil {
+			return balAString, balBString, err
+		}
+
+		tokenAddress := common.HexToAddress(address)
+		instance, err := NewSwapPair(tokenAddress, client)
+		if err != nil {
+			return balAString, balBString, err
+		}
+
+		bals, err := instance.GetReserves(&bind.CallOpts{})
+		if err != nil {
+			fmt.Println(err)
+			//url1 = "https://bsc-dataseed4.binance.org"
+			continue
+		}
+		balAString = bals.Reserve0.String()
+		balBString = bals.Reserve1.String()
+		break
+	}
+
+	return balAString, balBString, nil
+}
+
+func GetDFilTotalSupply() (string, error) {
+	var (
+		balString string
+	)
+
+	url1 := "https://api.node.glif.io"
+
+	for i := 1; i < 5; i++ {
+		client, err := ethclient.Dial(url1)
+		if err != nil {
+			return balString, err
+		}
+
+		tokenAddress := common.HexToAddress("0x8CE4501A420FcAE4B0fBAe73cC07f3A763B3aA7B")
+		instance, err := NewDfil(tokenAddress, client)
+		if err != nil {
+			return balString, err
+		}
+
+		bals, err := instance.TotalSupply(&bind.CallOpts{})
+		if err != nil {
+			fmt.Println(err)
+			//url1 = "https://bsc-dataseed4.binance.org"
+			continue
+		}
+		balString = bals.String()
+		break
+	}
+
+	return balString, nil
+}
+
 func GetAmountOut(strAmount string) (string, error) {
 
 	var balString string
@@ -252,58 +354,4 @@ func GetAmountOut1(strAmount string) (string, error) {
 
 	balString = bals[1].String()
 	return balString, nil
-}
-
-type eth struct {
-	CoinId string
-	Usd    float64
-}
-
-func requestHbsResult() (float64, error) {
-	//apiUrl := "https://api-testnet.bscscan.com/api"
-	apiUrl := "https://be.api.hbsswap.com/market/coin/rates"
-	// URL param
-	data := url.Values{}
-
-	u, err := url.ParseRequestURI(apiUrl)
-	if err != nil {
-		return 0, err
-	}
-	u.RawQuery = data.Encode() // URL encode
-	client := http.Client{
-		Timeout: 10 * time.Second,
-	}
-
-	resp, err := client.Get(u.String())
-	if err != nil {
-		return 0, err
-	}
-
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-
-		}
-	}(resp.Body)
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return 0, err
-	}
-
-	var i struct {
-		Data []*eth `json:"Data"`
-	}
-	err = json.Unmarshal(b, &i)
-	if err != nil {
-		return 0, err
-	}
-
-	var price float64
-	for _, v := range i.Data {
-		if "HBS(BEP20)" == v.CoinId { // 接收者
-			price = v.Usd
-		}
-	}
-
-	return price, err
 }

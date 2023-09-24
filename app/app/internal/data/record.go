@@ -21,6 +21,20 @@ type EthUserRecord struct {
 	UpdatedAt time.Time `gorm:"type:datetime;not null"`
 }
 
+type PairInfoPerSecond struct {
+	ID        int64  `gorm:"primarykey;type:int"`
+	Pair      string `gorm:"type:varchar(200);not null"`
+	Reserve0  string `gorm:"type:varchar(200);not null"`
+	Reserve1  string `gorm:"type:varchar(200);not null"`
+	Timestamp int64  `gorm:"type:int;not null"`
+}
+
+type DfilInfoPerSecond struct {
+	ID          int64  `gorm:"primarykey;type:int"`
+	TotalSupply string `gorm:"type:varchar(200);not null"`
+	Timestamp   int64  `gorm:"type:int;not null"`
+}
+
 type EthUserRecordRepo struct {
 	data *Data
 	log  *log.Helper
@@ -28,6 +42,30 @@ type EthUserRecordRepo struct {
 
 func NewEthUserRecordRepo(data *Data, logger log.Logger) biz.EthUserRecordRepo {
 	return &EthUserRecordRepo{
+		data: data,
+		log:  log.NewHelper(logger),
+	}
+}
+
+type PairInfoRepo struct {
+	data *Data
+	log  *log.Helper
+}
+
+func NewPairInfoRepo(data *Data, logger log.Logger) biz.PairInfoRepo {
+	return &PairInfoRepo{
+		data: data,
+		log:  log.NewHelper(logger),
+	}
+}
+
+type DFilInfoRepo struct {
+	data *Data
+	log  *log.Helper
+}
+
+func NewDFilInfoRepo(data *Data, logger log.Logger) biz.DFilInfoRepo {
+	return &DFilInfoRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}
@@ -82,4 +120,84 @@ func (e *EthUserRecordRepo) CreateEthUserRecordListByHash(ctx context.Context, r
 		Amount:   ethUserRecord.Amount,
 		CoinType: ethUserRecord.CoinType,
 	}, nil
+}
+
+func (p *PairInfoRepo) SetPairInfo(ctx context.Context, pair string, reserve0 string, reserve1 string, timestamp int64) error {
+	var pairInfoRecord PairInfoPerSecond
+	pairInfoRecord.Pair = pair
+	pairInfoRecord.Timestamp = timestamp
+	pairInfoRecord.Reserve0 = reserve0
+	pairInfoRecord.Reserve1 = reserve1
+
+	res := p.data.DB(ctx).Table("pair_info_per_second").Create(&pairInfoRecord)
+	if res.Error != nil {
+		return errors.New(500, "CREATE_PAIR_INFO_RECORD_ERROR", "交易对每分钟记录创建失败")
+	}
+
+	return nil
+}
+
+// GetPairInfoByTime .
+func (p *PairInfoRepo) GetPairInfoByTime(pair string, start int64, end int64) ([]*biz.PairInfoPerSecond, error) {
+	var pairInfoPerSeconds []*PairInfoPerSecond
+	if err := p.data.db.Table("pair_info_per_second").
+		Where("pair = ? and timestamp >= ? and timestamp <= ?", pair, start, end).
+		Find(&pairInfoPerSeconds).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.NotFound("INFO_NOT_FOUND", "location not found")
+		}
+
+		return nil, errors.New(500, "PAIR INFO ERROR", err.Error())
+	}
+
+	res := make([]*biz.PairInfoPerSecond, 0)
+	for _, pairInfoPerSecond := range pairInfoPerSeconds {
+		res = append(res, &biz.PairInfoPerSecond{
+			ID:        pairInfoPerSecond.ID,
+			Pair:      pairInfoPerSecond.Pair,
+			Reserve0:  pairInfoPerSecond.Reserve0,
+			Reserve1:  pairInfoPerSecond.Reserve1,
+			Timestamp: pairInfoPerSecond.Timestamp,
+		})
+	}
+
+	return res, nil
+}
+
+func (d *DFilInfoRepo) SetDFilInfo(ctx context.Context, totalSupply string, timestamp int64) error {
+	var dfilInfoRecord DfilInfoPerSecond
+	dfilInfoRecord.TotalSupply = totalSupply
+	dfilInfoRecord.Timestamp = timestamp
+
+	res := d.data.DB(ctx).Table("dfil_info_per_second").Create(&dfilInfoRecord)
+	if res.Error != nil {
+		return errors.New(500, "CREATE_DFIL_INFO_RECORD_ERROR", "dfil对每分钟记录创建失败")
+	}
+
+	return nil
+}
+
+// GetDFilInfoByTime .
+func (d *DFilInfoRepo) GetDFilInfoByTime(start int64, end int64) ([]*biz.DFilInfoPerSecond, error) {
+	var dfilInfoPerSeconds []*DfilInfoPerSecond
+	if err := d.data.db.Table("dfil_info_per_second").
+		Where("timestamp >= ? and timestamp <= ?", start, end).
+		Find(&dfilInfoPerSeconds).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.NotFound("INFO_NOT_FOUND", "location not found")
+		}
+
+		return nil, errors.New(500, "DFIL INFO ERROR", err.Error())
+	}
+
+	res := make([]*biz.DFilInfoPerSecond, 0)
+	for _, dfilInfoPerSecond := range dfilInfoPerSeconds {
+		res = append(res, &biz.DFilInfoPerSecond{
+			ID:          dfilInfoPerSecond.ID,
+			TotalSupply: dfilInfoPerSecond.TotalSupply,
+			Timestamp:   dfilInfoPerSecond.Timestamp,
+		})
+	}
+
+	return res, nil
 }

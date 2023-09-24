@@ -278,6 +278,1108 @@ var _ interface {
 	ErrorName() string
 } = FilUsdtReplyValidationError{}
 
+// Validate checks the field values on SetPerSecondDFilTotalRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SetPerSecondDFilTotalRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetPerSecondDFilTotalRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetPerSecondDFilTotalRequestMultiError, or nil if none found.
+func (m *SetPerSecondDFilTotalRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetPerSecondDFilTotalRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SetPerSecondDFilTotalRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetPerSecondDFilTotalRequestMultiError is an error wrapping multiple
+// validation errors returned by SetPerSecondDFilTotalRequest.ValidateAll() if
+// the designated constraints aren't met.
+type SetPerSecondDFilTotalRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetPerSecondDFilTotalRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetPerSecondDFilTotalRequestMultiError) AllErrors() []error { return m }
+
+// SetPerSecondDFilTotalRequestValidationError is the validation error returned
+// by SetPerSecondDFilTotalRequest.Validate if the designated constraints
+// aren't met.
+type SetPerSecondDFilTotalRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetPerSecondDFilTotalRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetPerSecondDFilTotalRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetPerSecondDFilTotalRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetPerSecondDFilTotalRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetPerSecondDFilTotalRequestValidationError) ErrorName() string {
+	return "SetPerSecondDFilTotalRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetPerSecondDFilTotalRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetPerSecondDFilTotalRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetPerSecondDFilTotalRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetPerSecondDFilTotalRequestValidationError{}
+
+// Validate checks the field values on SetPerSecondDFilTotalReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SetPerSecondDFilTotalReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetPerSecondDFilTotalReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetPerSecondDFilTotalReplyMultiError, or nil if none found.
+func (m *SetPerSecondDFilTotalReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetPerSecondDFilTotalReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SetPerSecondDFilTotalReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetPerSecondDFilTotalReplyMultiError is an error wrapping multiple
+// validation errors returned by SetPerSecondDFilTotalReply.ValidateAll() if
+// the designated constraints aren't met.
+type SetPerSecondDFilTotalReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetPerSecondDFilTotalReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetPerSecondDFilTotalReplyMultiError) AllErrors() []error { return m }
+
+// SetPerSecondDFilTotalReplyValidationError is the validation error returned
+// by SetPerSecondDFilTotalReply.Validate if the designated constraints aren't met.
+type SetPerSecondDFilTotalReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetPerSecondDFilTotalReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetPerSecondDFilTotalReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetPerSecondDFilTotalReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetPerSecondDFilTotalReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetPerSecondDFilTotalReplyValidationError) ErrorName() string {
+	return "SetPerSecondDFilTotalReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetPerSecondDFilTotalReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetPerSecondDFilTotalReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetPerSecondDFilTotalReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetPerSecondDFilTotalReplyValidationError{}
+
+// Validate checks the field values on GetPerSecondDFilTotalRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPerSecondDFilTotalRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPerSecondDFilTotalRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPerSecondDFilTotalRequestMultiError, or nil if none found.
+func (m *GetPerSecondDFilTotalRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPerSecondDFilTotalRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for StartTime
+
+	// no validation rules for EndTime
+
+	if len(errors) > 0 {
+		return GetPerSecondDFilTotalRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPerSecondDFilTotalRequestMultiError is an error wrapping multiple
+// validation errors returned by GetPerSecondDFilTotalRequest.ValidateAll() if
+// the designated constraints aren't met.
+type GetPerSecondDFilTotalRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPerSecondDFilTotalRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPerSecondDFilTotalRequestMultiError) AllErrors() []error { return m }
+
+// GetPerSecondDFilTotalRequestValidationError is the validation error returned
+// by GetPerSecondDFilTotalRequest.Validate if the designated constraints
+// aren't met.
+type GetPerSecondDFilTotalRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPerSecondDFilTotalRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPerSecondDFilTotalRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPerSecondDFilTotalRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPerSecondDFilTotalRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPerSecondDFilTotalRequestValidationError) ErrorName() string {
+	return "GetPerSecondDFilTotalRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPerSecondDFilTotalRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPerSecondDFilTotalRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPerSecondDFilTotalRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPerSecondDFilTotalRequestValidationError{}
+
+// Validate checks the field values on GetPerSecondDFilTotalReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPerSecondDFilTotalReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPerSecondDFilTotalReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPerSecondDFilTotalReplyMultiError, or nil if none found.
+func (m *GetPerSecondDFilTotalReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPerSecondDFilTotalReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetDataListDFil() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetPerSecondDFilTotalReplyValidationError{
+						field:  fmt.Sprintf("DataListDFil[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetPerSecondDFilTotalReplyValidationError{
+						field:  fmt.Sprintf("DataListDFil[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetPerSecondDFilTotalReplyValidationError{
+					field:  fmt.Sprintf("DataListDFil[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetPerSecondDFilTotalReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPerSecondDFilTotalReplyMultiError is an error wrapping multiple
+// validation errors returned by GetPerSecondDFilTotalReply.ValidateAll() if
+// the designated constraints aren't met.
+type GetPerSecondDFilTotalReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPerSecondDFilTotalReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPerSecondDFilTotalReplyMultiError) AllErrors() []error { return m }
+
+// GetPerSecondDFilTotalReplyValidationError is the validation error returned
+// by GetPerSecondDFilTotalReply.Validate if the designated constraints aren't met.
+type GetPerSecondDFilTotalReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPerSecondDFilTotalReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPerSecondDFilTotalReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPerSecondDFilTotalReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPerSecondDFilTotalReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPerSecondDFilTotalReplyValidationError) ErrorName() string {
+	return "GetPerSecondDFilTotalReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPerSecondDFilTotalReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPerSecondDFilTotalReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPerSecondDFilTotalReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPerSecondDFilTotalReplyValidationError{}
+
+// Validate checks the field values on SetPerSecondPairInfoRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SetPerSecondPairInfoRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetPerSecondPairInfoRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetPerSecondPairInfoRequestMultiError, or nil if none found.
+func (m *SetPerSecondPairInfoRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetPerSecondPairInfoRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SetPerSecondPairInfoRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetPerSecondPairInfoRequestMultiError is an error wrapping multiple
+// validation errors returned by SetPerSecondPairInfoRequest.ValidateAll() if
+// the designated constraints aren't met.
+type SetPerSecondPairInfoRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetPerSecondPairInfoRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetPerSecondPairInfoRequestMultiError) AllErrors() []error { return m }
+
+// SetPerSecondPairInfoRequestValidationError is the validation error returned
+// by SetPerSecondPairInfoRequest.Validate if the designated constraints
+// aren't met.
+type SetPerSecondPairInfoRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetPerSecondPairInfoRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetPerSecondPairInfoRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetPerSecondPairInfoRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetPerSecondPairInfoRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetPerSecondPairInfoRequestValidationError) ErrorName() string {
+	return "SetPerSecondPairInfoRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetPerSecondPairInfoRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetPerSecondPairInfoRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetPerSecondPairInfoRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetPerSecondPairInfoRequestValidationError{}
+
+// Validate checks the field values on SetPerSecondPairInfoReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SetPerSecondPairInfoReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetPerSecondPairInfoReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetPerSecondPairInfoReplyMultiError, or nil if none found.
+func (m *SetPerSecondPairInfoReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetPerSecondPairInfoReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SetPerSecondPairInfoReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetPerSecondPairInfoReplyMultiError is an error wrapping multiple validation
+// errors returned by SetPerSecondPairInfoReply.ValidateAll() if the
+// designated constraints aren't met.
+type SetPerSecondPairInfoReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetPerSecondPairInfoReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetPerSecondPairInfoReplyMultiError) AllErrors() []error { return m }
+
+// SetPerSecondPairInfoReplyValidationError is the validation error returned by
+// SetPerSecondPairInfoReply.Validate if the designated constraints aren't met.
+type SetPerSecondPairInfoReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetPerSecondPairInfoReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetPerSecondPairInfoReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetPerSecondPairInfoReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetPerSecondPairInfoReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetPerSecondPairInfoReplyValidationError) ErrorName() string {
+	return "SetPerSecondPairInfoReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetPerSecondPairInfoReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetPerSecondPairInfoReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetPerSecondPairInfoReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetPerSecondPairInfoReplyValidationError{}
+
+// Validate checks the field values on GetPerSecondPairInfoRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPerSecondPairInfoRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPerSecondPairInfoRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPerSecondPairInfoRequestMultiError, or nil if none found.
+func (m *GetPerSecondPairInfoRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPerSecondPairInfoRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for StartTime
+
+	// no validation rules for EndTime
+
+	// no validation rules for Pair
+
+	if len(errors) > 0 {
+		return GetPerSecondPairInfoRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPerSecondPairInfoRequestMultiError is an error wrapping multiple
+// validation errors returned by GetPerSecondPairInfoRequest.ValidateAll() if
+// the designated constraints aren't met.
+type GetPerSecondPairInfoRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPerSecondPairInfoRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPerSecondPairInfoRequestMultiError) AllErrors() []error { return m }
+
+// GetPerSecondPairInfoRequestValidationError is the validation error returned
+// by GetPerSecondPairInfoRequest.Validate if the designated constraints
+// aren't met.
+type GetPerSecondPairInfoRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPerSecondPairInfoRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPerSecondPairInfoRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPerSecondPairInfoRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPerSecondPairInfoRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPerSecondPairInfoRequestValidationError) ErrorName() string {
+	return "GetPerSecondPairInfoRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPerSecondPairInfoRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPerSecondPairInfoRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPerSecondPairInfoRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPerSecondPairInfoRequestValidationError{}
+
+// Validate checks the field values on GetPerSecondPairInfoReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetPerSecondPairInfoReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPerSecondPairInfoReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetPerSecondPairInfoReplyMultiError, or nil if none found.
+func (m *GetPerSecondPairInfoReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPerSecondPairInfoReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetDataListPair() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetPerSecondPairInfoReplyValidationError{
+						field:  fmt.Sprintf("DataListPair[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetPerSecondPairInfoReplyValidationError{
+						field:  fmt.Sprintf("DataListPair[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetPerSecondPairInfoReplyValidationError{
+					field:  fmt.Sprintf("DataListPair[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetPerSecondPairInfoReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPerSecondPairInfoReplyMultiError is an error wrapping multiple validation
+// errors returned by GetPerSecondPairInfoReply.ValidateAll() if the
+// designated constraints aren't met.
+type GetPerSecondPairInfoReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPerSecondPairInfoReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPerSecondPairInfoReplyMultiError) AllErrors() []error { return m }
+
+// GetPerSecondPairInfoReplyValidationError is the validation error returned by
+// GetPerSecondPairInfoReply.Validate if the designated constraints aren't met.
+type GetPerSecondPairInfoReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPerSecondPairInfoReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPerSecondPairInfoReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPerSecondPairInfoReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPerSecondPairInfoReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPerSecondPairInfoReplyValidationError) ErrorName() string {
+	return "GetPerSecondPairInfoReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPerSecondPairInfoReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPerSecondPairInfoReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPerSecondPairInfoReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPerSecondPairInfoReplyValidationError{}
+
+// Validate checks the field values on ReqContractRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReqContractRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReqContractRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReqContractRequestMultiError, or nil if none found.
+func (m *ReqContractRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReqContractRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ContractType
+
+	if len(errors) > 0 {
+		return ReqContractRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReqContractRequestMultiError is an error wrapping multiple validation errors
+// returned by ReqContractRequest.ValidateAll() if the designated constraints
+// aren't met.
+type ReqContractRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReqContractRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReqContractRequestMultiError) AllErrors() []error { return m }
+
+// ReqContractRequestValidationError is the validation error returned by
+// ReqContractRequest.Validate if the designated constraints aren't met.
+type ReqContractRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReqContractRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReqContractRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReqContractRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReqContractRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReqContractRequestValidationError) ErrorName() string {
+	return "ReqContractRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReqContractRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReqContractRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReqContractRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReqContractRequestValidationError{}
+
+// Validate checks the field values on ReqContractReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ReqContractReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReqContractReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReqContractReplyMultiError, or nil if none found.
+func (m *ReqContractReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReqContractReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ReqContractReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReqContractReplyMultiError is an error wrapping multiple validation errors
+// returned by ReqContractReply.ValidateAll() if the designated constraints
+// aren't met.
+type ReqContractReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReqContractReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReqContractReplyMultiError) AllErrors() []error { return m }
+
+// ReqContractReplyValidationError is the validation error returned by
+// ReqContractReply.Validate if the designated constraints aren't met.
+type ReqContractReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReqContractReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReqContractReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReqContractReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReqContractReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReqContractReplyValidationError) ErrorName() string { return "ReqContractReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ReqContractReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReqContractReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReqContractReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReqContractReplyValidationError{}
+
 // Validate checks the field values on FilUsdtReply_ListK with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -401,3 +1503,223 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = FilUsdtReply_ListKValidationError{}
+
+// Validate checks the field values on GetPerSecondDFilTotalReply_ListDfil with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetPerSecondDFilTotalReply_ListDfil) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPerSecondDFilTotalReply_ListDfil
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetPerSecondDFilTotalReply_ListDfilMultiError, or nil if none found.
+func (m *GetPerSecondDFilTotalReply_ListDfil) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPerSecondDFilTotalReply_ListDfil) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Time
+
+	// no validation rules for TotalSupply
+
+	if len(errors) > 0 {
+		return GetPerSecondDFilTotalReply_ListDfilMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPerSecondDFilTotalReply_ListDfilMultiError is an error wrapping multiple
+// validation errors returned by
+// GetPerSecondDFilTotalReply_ListDfil.ValidateAll() if the designated
+// constraints aren't met.
+type GetPerSecondDFilTotalReply_ListDfilMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPerSecondDFilTotalReply_ListDfilMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPerSecondDFilTotalReply_ListDfilMultiError) AllErrors() []error { return m }
+
+// GetPerSecondDFilTotalReply_ListDfilValidationError is the validation error
+// returned by GetPerSecondDFilTotalReply_ListDfil.Validate if the designated
+// constraints aren't met.
+type GetPerSecondDFilTotalReply_ListDfilValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPerSecondDFilTotalReply_ListDfilValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPerSecondDFilTotalReply_ListDfilValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPerSecondDFilTotalReply_ListDfilValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPerSecondDFilTotalReply_ListDfilValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPerSecondDFilTotalReply_ListDfilValidationError) ErrorName() string {
+	return "GetPerSecondDFilTotalReply_ListDfilValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPerSecondDFilTotalReply_ListDfilValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPerSecondDFilTotalReply_ListDfil.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPerSecondDFilTotalReply_ListDfilValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPerSecondDFilTotalReply_ListDfilValidationError{}
+
+// Validate checks the field values on GetPerSecondPairInfoReply_ListPair with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetPerSecondPairInfoReply_ListPair) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetPerSecondPairInfoReply_ListPair
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetPerSecondPairInfoReply_ListPairMultiError, or nil if none found.
+func (m *GetPerSecondPairInfoReply_ListPair) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetPerSecondPairInfoReply_ListPair) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Time
+
+	// no validation rules for Reserve0
+
+	// no validation rules for Reserve1
+
+	if len(errors) > 0 {
+		return GetPerSecondPairInfoReply_ListPairMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetPerSecondPairInfoReply_ListPairMultiError is an error wrapping multiple
+// validation errors returned by
+// GetPerSecondPairInfoReply_ListPair.ValidateAll() if the designated
+// constraints aren't met.
+type GetPerSecondPairInfoReply_ListPairMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetPerSecondPairInfoReply_ListPairMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetPerSecondPairInfoReply_ListPairMultiError) AllErrors() []error { return m }
+
+// GetPerSecondPairInfoReply_ListPairValidationError is the validation error
+// returned by GetPerSecondPairInfoReply_ListPair.Validate if the designated
+// constraints aren't met.
+type GetPerSecondPairInfoReply_ListPairValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetPerSecondPairInfoReply_ListPairValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetPerSecondPairInfoReply_ListPairValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetPerSecondPairInfoReply_ListPairValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetPerSecondPairInfoReply_ListPairValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetPerSecondPairInfoReply_ListPairValidationError) ErrorName() string {
+	return "GetPerSecondPairInfoReply_ListPairValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetPerSecondPairInfoReply_ListPairValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetPerSecondPairInfoReply_ListPair.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetPerSecondPairInfoReply_ListPairValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetPerSecondPairInfoReply_ListPairValidationError{}

@@ -17,7 +17,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewTransaction, NewUserRepo, NewUserInfoRepo, NewUserBalanceRepo, NewConfigRepo, NewUserRecommendRepo, NewEthUserRecordRepo, NewLocationRepo, NewUserCurrentMonthRecommendRepo, NewKLineMOneRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewTransaction, NewUserRepo, NewUserInfoRepo, NewUserBalanceRepo, NewConfigRepo, NewUserRecommendRepo, NewEthUserRecordRepo, NewLocationRepo, NewUserCurrentMonthRecommendRepo, NewKLineMOneRepo, NewPairInfoRepo, NewDFilInfoRepo)
 
 type Data struct {
 	db  *gorm.DB

@@ -45,6 +45,127 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/app_server/get_per_second_dfil_total:
+        get:
+            tags:
+                - App
+            operationId: App_GetPerSecondDFilTotal
+            parameters:
+                - name: startTime
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: endTime
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetPerSecondDFilTotalReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/app_server/get_per_second_pair_info:
+        get:
+            tags:
+                - App
+            operationId: App_GetPerSecondPairInfo
+            parameters:
+                - name: startTime
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: endTime
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: pair
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetPerSecondPairInfoReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/app_server/req_contract:
+        get:
+            tags:
+                - App
+            operationId: App_ReqContract
+            parameters:
+                - name: contractType
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReqContractReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/app_server/set_per_second_dfil_total:
+        get:
+            tags:
+                - App
+            operationId: App_SetPerSecondDFilTotal
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetPerSecondDFilTotalReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/app_server/set_per_second_pair_info:
+        get:
+            tags:
+                - App
+            operationId: App_SetPerSecondPairInfo
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetPerSecondPairInfoReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
         FilUsdtReply:
@@ -90,6 +211,38 @@ components:
                 DealSelfAmount:
                     type: number
                     format: double
+        GetPerSecondDFilTotalReply:
+            type: object
+            properties:
+                dataListDFil:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GetPerSecondDFilTotalReply_List_dfil'
+        GetPerSecondDFilTotalReply_List_dfil:
+            type: object
+            properties:
+                time:
+                    type: integer
+                    format: int64
+                totalSupply:
+                    type: string
+        GetPerSecondPairInfoReply:
+            type: object
+            properties:
+                dataListPair:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GetPerSecondPairInfoReply_List_pair'
+        GetPerSecondPairInfoReply_List_pair:
+            type: object
+            properties:
+                time:
+                    type: integer
+                    format: int64
+                reserve0:
+                    type: string
+                reserve1:
+                    type: string
         GoogleProtobufAny:
             type: object
             properties:
@@ -98,6 +251,15 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ReqContractReply:
+            type: object
+            properties: {}
+        SetPerSecondDFilTotalReply:
+            type: object
+            properties: {}
+        SetPerSecondPairInfoReply:
+            type: object
+            properties: {}
         Status:
             type: object
             properties:
