@@ -72,6 +72,46 @@ func (a *AppService) GetPerSecondPairInfo(ctx context.Context, req *v1.GetPerSec
 }
 
 func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest) (*v1.ReqContractReply, error) {
+
+	if "1" == req.ContractType {
+		var (
+			checkOwners     []string
+			ownerFilBalance string
+			err             error
+		)
+		checkOwners, err = GetFactoryCheckOwner()
+		if nil != err {
+			return nil, err
+		}
+
+		for _, vCheckOwners := range checkOwners {
+			ownerFilBalance, err = GetExchangeOwnerFilBalance(vCheckOwners)
+			if nil != err {
+				fmt.Println("未获取到信息")
+				continue
+			}
+
+			if ownerFilBalance < "1000000000000000000" {
+				fmt.Println(vCheckOwners, ownerFilBalance, "流动性不足")
+				continue
+			}
+
+			_, err = createTokenOwner(vCheckOwners)
+			if nil != err {
+				fmt.Println("未获取到信息")
+				continue
+			}
+		}
+	} else if "2" == req.ContractType {
+		var (
+			err error
+		)
+		_, err = managerReward()
+		if nil != err {
+			fmt.Println("未获取到信息", err)
+		}
+	}
+
 	return nil, nil
 }
 
@@ -184,14 +224,12 @@ func tokenWithdraw(requestUrl string, chainId int64) (bool, error) {
 	privateKey, err = crypto.HexToECDSA("")
 	if err != nil {
 		fmt.Println(err)
-		log.Fatal(err)
 		return false, err
 	}
 
 	gasPrice, err := client.SuggestGasPrice(context.Background())
 	if err != nil {
 		fmt.Println(err)
-		log.Fatal(err)
 		return false, err
 	}
 
@@ -218,6 +256,176 @@ func tokenWithdraw(requestUrl string, chainId int64) (bool, error) {
 	return true, nil
 }
 
+func GetFactoryCheckOwner() ([]string, error) {
+	var (
+		balsString []string
+	)
+
+	url1 := "https://api.node.glif.io"
+
+	for i := 0; i < 5; i++ {
+		client, err := ethclient.Dial(url1)
+		if err != nil {
+			return balsString, err
+		}
+
+		tokenAddress := common.HexToAddress("0x8505616465ed0ba07Ead8eBA6295a9B16E5a325E")
+		instance, err := NewTokenFactory(tokenAddress, client)
+		if err != nil {
+			return balsString, err
+		}
+
+		bals, err := instance.GetCheckOwners(&bind.CallOpts{})
+		if err != nil {
+			fmt.Println(err)
+			//url1 = "https://bsc-dataseed4.binance.org"
+			continue
+		}
+
+		balsString = make([]string, 0)
+		for _, vBals := range bals {
+			balsString = append(balsString, vBals.String())
+		}
+
+		break
+	}
+
+	return balsString, nil
+}
+
+func GetExchangeOwnerFilBalance(account string) (string, error) {
+	var (
+		balString string
+	)
+
+	url1 := "https://api.node.glif.io"
+
+	for i := 0; i < 5; i++ {
+		client, err := ethclient.Dial(url1)
+		if err != nil {
+			return balString, err
+		}
+
+		tokenAddress := common.HexToAddress("0x9Ec5b4Ce25dfAE269151f926dBAc7ff10A33a34a")
+		instance, err := NewTokenExchange(tokenAddress, client)
+		if err != nil {
+			return balString, err
+		}
+
+		bals, err := instance.GetTokenOwnerFilBalance(&bind.CallOpts{}, common.HexToAddress(account))
+		if err != nil {
+			fmt.Println(err)
+			//url1 = "https://bsc-dataseed4.binance.org"
+			continue
+		}
+		balString = bals.String()
+		break
+	}
+
+	return balString, nil
+}
+
+func createTokenOwner(account string) (string, error) {
+
+	requestUrl := "https://api.node.glif.io"
+
+	client, err := ethclient.Dial(requestUrl)
+	//client, err := ethclient.Dial("https://bsc-dataseed.binance.org/")
+	if err != nil {
+		return "", err
+	}
+
+	tokenAddress := common.HexToAddress("0x8505616465ed0ba07Ead8eBA6295a9B16E5a325E")
+	instance, err := NewTokenFactory(tokenAddress, client)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	var authUser *bind.TransactOpts
+
+	var privateKey *ecdsa.PrivateKey
+	privateKey, err = crypto.HexToECDSA("")
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	//gasPrice, err := client.SuggestGasPrice(context.Background())
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return "", err
+	//}
+
+	authUser, err = bind.NewKeyedTransactorWithChainID(privateKey, new(big.Int).SetInt64(314))
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	_, err = instance.CreateTokenOwner(&bind.TransactOpts{
+		From:     authUser.From,
+		Signer:   authUser.Signer,
+		GasLimit: 0,
+	}, common.HexToAddress(account))
+	if err != nil {
+		fmt.Println(1, account, err)
+		return "", err
+	}
+
+	return "", nil
+}
+
+func managerReward() (string, error) {
+
+	requestUrl := "https://api.node.glif.io"
+
+	client, err := ethclient.Dial(requestUrl)
+	//client, err := ethclient.Dial("https://bsc-dataseed.binance.org/")
+	if err != nil {
+		return "", err
+	}
+
+	tokenAddress := common.HexToAddress("0x8b026AfaE06A0F86284427EBa48962248D22570b")
+	instance, err := NewManagerFil(tokenAddress, client)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	var authUser *bind.TransactOpts
+
+	var privateKey *ecdsa.PrivateKey
+	privateKey, err = crypto.HexToECDSA("")
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	//gasPrice, err := client.SuggestGasPrice(context.Background())
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return "", err
+	//}
+
+	authUser, err = bind.NewKeyedTransactorWithChainID(privateKey, new(big.Int).SetInt64(314))
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	_, err = instance.Reward(&bind.TransactOpts{
+		From:     authUser.From,
+		Signer:   authUser.Signer,
+		GasLimit: 0,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return "", nil
+}
+
 func GetReserves(address string) (string, string, error) {
 	var (
 		balAString string
@@ -226,7 +434,7 @@ func GetReserves(address string) (string, string, error) {
 
 	url1 := "https://api.node.glif.io"
 
-	for i := 1; i < 5; i++ {
+	for i := 0; i < 5; i++ {
 		client, err := ethclient.Dial(url1)
 		if err != nil {
 			return balAString, balBString, err
@@ -259,7 +467,7 @@ func GetDFilTotalSupply() (string, error) {
 
 	url1 := "https://api.node.glif.io"
 
-	for i := 1; i < 5; i++ {
+	for i := 0; i < 5; i++ {
 		client, err := ethclient.Dial(url1)
 		if err != nil {
 			return balString, err

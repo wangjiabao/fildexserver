@@ -205,8 +205,8 @@ func (ruc *RecordUseCase) GetPerSecondPairInfo(ctx context.Context, req *v1.GetP
 
 	startTime = req.StartTime
 	endTime = req.EndTime
-	if req.StartTime+43200 < req.EndTime {
-		endTime = req.StartTime + 43200
+	if req.StartTime+2592000 < req.EndTime {
+		endTime = req.StartTime + 2592000
 	}
 
 	pairInfos, err = ruc.pairInfoRepo.GetPairInfoByTime(req.Pair, startTime, endTime)
@@ -241,8 +241,8 @@ func (ruc *RecordUseCase) GetPerSecondDFilTotal(ctx context.Context, req *v1.Get
 
 	startTime = req.StartTime
 	endTime = req.EndTime
-	if req.StartTime+43200 < req.EndTime {
-		endTime = req.StartTime + 43200
+	if req.StartTime+2592000 < req.EndTime {
+		endTime = req.StartTime + 2592000
 	}
 
 	dfilInfos, err = ruc.dfilInfoRepo.GetDFilInfoByTime(startTime, endTime)
