@@ -108,7 +108,7 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 		)
 		_, err = managerReward()
 		if nil != err {
-			fmt.Println("未获取到信息", err)
+			//fmt.Println("未获取到信息", err)
 		}
 	}
 
