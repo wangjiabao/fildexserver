@@ -91,7 +91,7 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 				continue
 			}
 
-			if ownerFilBalance < "1000000000000000000" {
+			if ownerFilBalance < "1000000000000000000000" {
 				fmt.Println(vCheckOwners, ownerFilBalance, "流动性不足")
 				continue
 			}
