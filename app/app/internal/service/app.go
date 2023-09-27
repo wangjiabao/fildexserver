@@ -110,6 +110,14 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 		if nil != err {
 			//fmt.Println("未获取到信息", err)
 		}
+	} else if "3" == req.ContractType {
+		var (
+			err error
+		)
+		_, err = withdrawDFilForManagerFil()
+		if nil != err {
+			//fmt.Println("未获取到信息", err)
+		}
 	}
 
 	return nil, nil
@@ -370,6 +378,56 @@ func createTokenOwner(account string) (string, error) {
 	}, common.HexToAddress(account))
 	if err != nil {
 		fmt.Println(1, account, err)
+		return "", err
+	}
+
+	return "", nil
+}
+
+func withdrawDFilForManagerFil() (string, error) {
+
+	requestUrl := "https://api.node.glif.io"
+
+	client, err := ethclient.Dial(requestUrl)
+	//client, err := ethclient.Dial("https://bsc-dataseed.binance.org/")
+	if err != nil {
+		return "", err
+	}
+
+	tokenAddress := common.HexToAddress("0x9Ec5b4Ce25dfAE269151f926dBAc7ff10A33a34a")
+	instance, err := NewTokenExchange(tokenAddress, client)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	var authUser *bind.TransactOpts
+
+	var privateKey *ecdsa.PrivateKey
+	privateKey, err = crypto.HexToECDSA("")
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	//gasPrice, err := client.SuggestGasPrice(context.Background())
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return "", err
+	//}
+
+	authUser, err = bind.NewKeyedTransactorWithChainID(privateKey, new(big.Int).SetInt64(314))
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	_, err = instance.DFIL2FIL(&bind.TransactOpts{
+		From:     authUser.From,
+		Signer:   authUser.Signer,
+		GasLimit: 0,
+	}, new(big.Int).SetInt64(100000000000000), new(big.Int).SetInt64(0))
+	if err != nil {
 		return "", err
 	}
 
