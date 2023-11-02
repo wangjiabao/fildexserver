@@ -6,6 +6,24 @@ info:
     title: App API
     version: 0.0.1
 paths:
+    /api/app_server/dfil_log:
+        get:
+            tags:
+                - App
+            operationId: App_DfilLog
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DfilLogReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/app_server/fil_usdt:
         get:
             tags:
@@ -130,6 +148,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/app_server/set_owner_info:
+        post:
+            tags:
+                - App
+            operationId: App_SetOwnerInfo
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SetOwnerInfoRequest_SendBody'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SetOwnerInfoReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/app_server/set_per_second_dfil_total:
         get:
             tags:
@@ -168,6 +210,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
+        DfilLogReply:
+            type: object
+            properties: {}
         FilUsdtReply:
             type: object
             properties:
@@ -254,6 +299,24 @@ components:
         ReqContractReply:
             type: object
             properties: {}
+        SetOwnerInfoReply:
+            type: object
+            properties: {}
+        SetOwnerInfoRequest_SendBody:
+            type: object
+            properties:
+                account:
+                    type: string
+                phone:
+                    type: string
+                qq:
+                    type: string
+                email:
+                    type: string
+                telegram:
+                    type: string
+                name:
+                    type: string
         SetPerSecondDFilTotalReply:
             type: object
             properties: {}

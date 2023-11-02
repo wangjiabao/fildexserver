@@ -6,6 +6,17 @@ import (
 	"time"
 )
 
+type OwnerInfo struct {
+	ID       int64
+	Account  string
+	Name     string
+	Phone    string
+	QQ       string
+	Email    string
+	Telegram string
+	Logo     string
+}
+
 type User struct {
 	ID        int64
 	Address   string

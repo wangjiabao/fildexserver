@@ -1380,6 +1380,438 @@ var _ interface {
 	ErrorName() string
 } = ReqContractReplyValidationError{}
 
+// Validate checks the field values on DfilLogRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DfilLogRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DfilLogRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DfilLogRequestMultiError,
+// or nil if none found.
+func (m *DfilLogRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DfilLogRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return DfilLogRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// DfilLogRequestMultiError is an error wrapping multiple validation errors
+// returned by DfilLogRequest.ValidateAll() if the designated constraints
+// aren't met.
+type DfilLogRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DfilLogRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DfilLogRequestMultiError) AllErrors() []error { return m }
+
+// DfilLogRequestValidationError is the validation error returned by
+// DfilLogRequest.Validate if the designated constraints aren't met.
+type DfilLogRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DfilLogRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DfilLogRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DfilLogRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DfilLogRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DfilLogRequestValidationError) ErrorName() string { return "DfilLogRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DfilLogRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDfilLogRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DfilLogRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DfilLogRequestValidationError{}
+
+// Validate checks the field values on DfilLogReply with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DfilLogReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DfilLogReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DfilLogReplyMultiError, or
+// nil if none found.
+func (m *DfilLogReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DfilLogReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return DfilLogReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// DfilLogReplyMultiError is an error wrapping multiple validation errors
+// returned by DfilLogReply.ValidateAll() if the designated constraints aren't met.
+type DfilLogReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DfilLogReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DfilLogReplyMultiError) AllErrors() []error { return m }
+
+// DfilLogReplyValidationError is the validation error returned by
+// DfilLogReply.Validate if the designated constraints aren't met.
+type DfilLogReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DfilLogReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DfilLogReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DfilLogReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DfilLogReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DfilLogReplyValidationError) ErrorName() string { return "DfilLogReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DfilLogReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDfilLogReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DfilLogReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DfilLogReplyValidationError{}
+
+// Validate checks the field values on SetOwnerInfoRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SetOwnerInfoRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetOwnerInfoRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetOwnerInfoRequestMultiError, or nil if none found.
+func (m *SetOwnerInfoRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetOwnerInfoRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetSendBody()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SetOwnerInfoRequestValidationError{
+					field:  "SendBody",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SetOwnerInfoRequestValidationError{
+					field:  "SendBody",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSendBody()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SetOwnerInfoRequestValidationError{
+				field:  "SendBody",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return SetOwnerInfoRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetOwnerInfoRequestMultiError is an error wrapping multiple validation
+// errors returned by SetOwnerInfoRequest.ValidateAll() if the designated
+// constraints aren't met.
+type SetOwnerInfoRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetOwnerInfoRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetOwnerInfoRequestMultiError) AllErrors() []error { return m }
+
+// SetOwnerInfoRequestValidationError is the validation error returned by
+// SetOwnerInfoRequest.Validate if the designated constraints aren't met.
+type SetOwnerInfoRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetOwnerInfoRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetOwnerInfoRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetOwnerInfoRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetOwnerInfoRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetOwnerInfoRequestValidationError) ErrorName() string {
+	return "SetOwnerInfoRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetOwnerInfoRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetOwnerInfoRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetOwnerInfoRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetOwnerInfoRequestValidationError{}
+
+// Validate checks the field values on SetOwnerInfoReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *SetOwnerInfoReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetOwnerInfoReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetOwnerInfoReplyMultiError, or nil if none found.
+func (m *SetOwnerInfoReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetOwnerInfoReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SetOwnerInfoReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetOwnerInfoReplyMultiError is an error wrapping multiple validation errors
+// returned by SetOwnerInfoReply.ValidateAll() if the designated constraints
+// aren't met.
+type SetOwnerInfoReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetOwnerInfoReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetOwnerInfoReplyMultiError) AllErrors() []error { return m }
+
+// SetOwnerInfoReplyValidationError is the validation error returned by
+// SetOwnerInfoReply.Validate if the designated constraints aren't met.
+type SetOwnerInfoReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetOwnerInfoReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetOwnerInfoReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetOwnerInfoReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetOwnerInfoReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetOwnerInfoReplyValidationError) ErrorName() string {
+	return "SetOwnerInfoReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetOwnerInfoReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetOwnerInfoReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetOwnerInfoReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetOwnerInfoReplyValidationError{}
+
 // Validate checks the field values on FilUsdtReply_ListK with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1723,3 +2155,118 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetPerSecondPairInfoReply_ListPairValidationError{}
+
+// Validate checks the field values on SetOwnerInfoRequest_SendBody with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SetOwnerInfoRequest_SendBody) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SetOwnerInfoRequest_SendBody with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SetOwnerInfoRequest_SendBodyMultiError, or nil if none found.
+func (m *SetOwnerInfoRequest_SendBody) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SetOwnerInfoRequest_SendBody) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Account
+
+	// no validation rules for Phone
+
+	// no validation rules for Qq
+
+	// no validation rules for Email
+
+	// no validation rules for Telegram
+
+	// no validation rules for Name
+
+	if len(errors) > 0 {
+		return SetOwnerInfoRequest_SendBodyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SetOwnerInfoRequest_SendBodyMultiError is an error wrapping multiple
+// validation errors returned by SetOwnerInfoRequest_SendBody.ValidateAll() if
+// the designated constraints aren't met.
+type SetOwnerInfoRequest_SendBodyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SetOwnerInfoRequest_SendBodyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SetOwnerInfoRequest_SendBodyMultiError) AllErrors() []error { return m }
+
+// SetOwnerInfoRequest_SendBodyValidationError is the validation error returned
+// by SetOwnerInfoRequest_SendBody.Validate if the designated constraints
+// aren't met.
+type SetOwnerInfoRequest_SendBodyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SetOwnerInfoRequest_SendBodyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SetOwnerInfoRequest_SendBodyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SetOwnerInfoRequest_SendBodyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SetOwnerInfoRequest_SendBodyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SetOwnerInfoRequest_SendBodyValidationError) ErrorName() string {
+	return "SetOwnerInfoRequest_SendBodyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SetOwnerInfoRequest_SendBodyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSetOwnerInfoRequest_SendBody.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SetOwnerInfoRequest_SendBodyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SetOwnerInfoRequest_SendBodyValidationError{}

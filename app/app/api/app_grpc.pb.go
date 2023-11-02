@@ -28,6 +28,8 @@ type AppClient interface {
 	SetPerSecondPairInfo(ctx context.Context, in *SetPerSecondPairInfoRequest, opts ...grpc.CallOption) (*SetPerSecondPairInfoReply, error)
 	GetPerSecondPairInfo(ctx context.Context, in *GetPerSecondPairInfoRequest, opts ...grpc.CallOption) (*GetPerSecondPairInfoReply, error)
 	ReqContract(ctx context.Context, in *ReqContractRequest, opts ...grpc.CallOption) (*ReqContractReply, error)
+	DfilLog(ctx context.Context, in *DfilLogRequest, opts ...grpc.CallOption) (*DfilLogReply, error)
+	SetOwnerInfo(ctx context.Context, in *SetOwnerInfoRequest, opts ...grpc.CallOption) (*SetOwnerInfoReply, error)
 }
 
 type appClient struct {
@@ -92,6 +94,24 @@ func (c *appClient) ReqContract(ctx context.Context, in *ReqContractRequest, opt
 	return out, nil
 }
 
+func (c *appClient) DfilLog(ctx context.Context, in *DfilLogRequest, opts ...grpc.CallOption) (*DfilLogReply, error) {
+	out := new(DfilLogReply)
+	err := c.cc.Invoke(ctx, "/api.App/DfilLog", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) SetOwnerInfo(ctx context.Context, in *SetOwnerInfoRequest, opts ...grpc.CallOption) (*SetOwnerInfoReply, error) {
+	out := new(SetOwnerInfoReply)
+	err := c.cc.Invoke(ctx, "/api.App/SetOwnerInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppServer is the server API for App service.
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
@@ -102,6 +122,8 @@ type AppServer interface {
 	SetPerSecondPairInfo(context.Context, *SetPerSecondPairInfoRequest) (*SetPerSecondPairInfoReply, error)
 	GetPerSecondPairInfo(context.Context, *GetPerSecondPairInfoRequest) (*GetPerSecondPairInfoReply, error)
 	ReqContract(context.Context, *ReqContractRequest) (*ReqContractReply, error)
+	DfilLog(context.Context, *DfilLogRequest) (*DfilLogReply, error)
+	SetOwnerInfo(context.Context, *SetOwnerInfoRequest) (*SetOwnerInfoReply, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -126,6 +148,12 @@ func (UnimplementedAppServer) GetPerSecondPairInfo(context.Context, *GetPerSecon
 }
 func (UnimplementedAppServer) ReqContract(context.Context, *ReqContractRequest) (*ReqContractReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReqContract not implemented")
+}
+func (UnimplementedAppServer) DfilLog(context.Context, *DfilLogRequest) (*DfilLogReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DfilLog not implemented")
+}
+func (UnimplementedAppServer) SetOwnerInfo(context.Context, *SetOwnerInfoRequest) (*SetOwnerInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetOwnerInfo not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
 
@@ -248,6 +276,42 @@ func _App_ReqContract_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _App_DfilLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DfilLogRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).DfilLog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/DfilLog",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).DfilLog(ctx, req.(*DfilLogRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_SetOwnerInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetOwnerInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).SetOwnerInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.App/SetOwnerInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).SetOwnerInfo(ctx, req.(*SetOwnerInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // App_ServiceDesc is the grpc.ServiceDesc for App service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +342,14 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReqContract",
 			Handler:    _App_ReqContract_Handler,
+		},
+		{
+			MethodName: "DfilLog",
+			Handler:    _App_DfilLog_Handler,
+		},
+		{
+			MethodName: "SetOwnerInfo",
+			Handler:    _App_SetOwnerInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

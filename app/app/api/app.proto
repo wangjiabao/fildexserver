@@ -47,6 +47,19 @@ service App {
 			get: "/api/app_server/req_contract"
 		};
 	};
+
+	rpc DfilLog (DfilLogRequest) returns (DfilLogReply) {
+		option (google.api.http) = {
+			get: "/api/app_server/dfil_log"
+		};
+	};
+
+	rpc SetOwnerInfo (SetOwnerInfoRequest) returns (SetOwnerInfoReply) {
+		option (google.api.http) = {
+			post: "/api/app_server/set_owner_info"
+			body: "send_body"
+		};
+	};
 }
 
 message FilUsdtRequest {
@@ -119,4 +132,26 @@ message ReqContractRequest {
 }
 
 message ReqContractReply {
+}
+
+message DfilLogRequest {
+}
+
+message DfilLogReply {
+}
+
+message SetOwnerInfoRequest {
+	message SendBody{
+		string account = 1;
+		string phone = 2;
+		string qq = 3;
+		string email = 4;
+		string telegram = 5;
+		string name = 6;
+	}
+
+	SendBody send_body = 1;
+}
+
+message SetOwnerInfoReply {
 }

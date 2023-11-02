@@ -7,12 +7,15 @@ import (
 	"dhb/app/app/internal/biz"
 	"dhb/app/app/internal/conf"
 	"fmt"
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/go-kratos/kratos/v2/log"
 	"math/big"
+	"strings"
 )
 
 // AppService service.
@@ -91,7 +94,7 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 				continue
 			}
 
-			if ownerFilBalance < "1000000000000000000000" {
+			if len(ownerFilBalance) < 22 { // 小于22位精度
 				fmt.Println(vCheckOwners, ownerFilBalance, "流动性不足")
 				continue
 			}
@@ -119,6 +122,16 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 			//fmt.Println("未获取到信息", err)
 		}
 	}
+
+	return nil, nil
+}
+
+func (a *AppService) DfilLog(ctx context.Context, req *v1.DfilLogRequest) (*v1.DfilLogReply, error) {
+	GetDFilLogs()
+	return nil, nil
+}
+
+func (a *AppService) SetOwnerInfo(ctx context.Context, req *v1.SetOwnerInfoRequest) (*v1.SetOwnerInfoReply, error) {
 
 	return nil, nil
 }
@@ -516,6 +529,98 @@ func GetReserves(address string) (string, string, error) {
 	}
 
 	return balAString, balBString, nil
+}
+
+// LogTransfer ..
+type LogTransfer struct {
+	From  common.Address
+	To    common.Address
+	Value *big.Int
+}
+
+// LogApproval ..
+type LogApproval struct {
+	TokenOwner common.Address
+	Spender    common.Address
+	Tokens     *big.Int
+}
+
+func GetDFilLogs() {
+	client, err := ethclient.Dial("https://api.node.glif.io")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// 0x Protocol (ZRX) token address
+	contractAddress := common.HexToAddress("0x8CE4501A420FcAE4B0fBAe73cC07f3A763B3aA7B")
+	query := ethereum.FilterQuery{
+		FromBlock: big.NewInt(3309560),
+		ToBlock:   big.NewInt(3309560),
+		Addresses: []common.Address{
+			contractAddress,
+		},
+	}
+
+	logs, err := client.FilterLogs(context.Background(), query)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	contractAbi, err := abi.JSON(strings.NewReader(string(DfilABI)))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	logTransferSig := []byte("Transfer(address,address,uint256)")
+	//LogApprovalSig := []byte("Approval(address,address,uint256)")
+	logTransferSigHash := crypto.Keccak256Hash(logTransferSig)
+	//logApprovalSigHash := crypto.Keccak256Hash(LogApprovalSig)
+
+	for _, vLog := range logs {
+		fmt.Println(vLog)
+		fmt.Printf("Log Block Number: %d\n", vLog.BlockNumber)
+		fmt.Printf("Log Index: %d\n", vLog.Index)
+
+		switch vLog.Topics[0].Hex() {
+		case logTransferSigHash.Hex():
+			fmt.Printf("Log Name: Transfer\n")
+
+			var transferEvent LogTransfer
+			event, err := contractAbi.Unpack("Transfer", vLog.Data)
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			fmt.Println(event)
+
+			transferEvent.From = common.HexToAddress(vLog.Topics[1].Hex())
+			transferEvent.To = common.HexToAddress(vLog.Topics[2].Hex())
+
+			fmt.Println(transferEvent)
+			fmt.Printf("From: %s\n", transferEvent.From.Hex())
+			fmt.Printf("To: %s\n", transferEvent.To.Hex())
+			fmt.Println(common.Bytes2Hex(vLog.Data))
+
+			//case logApprovalSigHash.Hex():
+			//	fmt.Printf("Log Name: Approval\n")
+			//
+			//	var approvalEvent LogApproval
+			//
+			//	_, err := contractAbi.Unpack("Approval", vLog.Data)
+			//	if err != nil {
+			//		log.Fatal(err)
+			//	}
+			//
+			//	approvalEvent.TokenOwner = common.HexToAddress(vLog.Topics[1].Hex())
+			//	approvalEvent.Spender = common.HexToAddress(vLog.Topics[2].Hex())
+			//
+			//	fmt.Printf("Token Owner: %s\n", approvalEvent.TokenOwner.Hex())
+			//	fmt.Printf("Spender: %s\n", approvalEvent.Spender.Hex())
+			//	fmt.Printf("Tokens: %s\n", approvalEvent.Tokens.String())
+		}
+
+		fmt.Printf("\n\n")
+	}
 }
 
 func GetDFilTotalSupply() (string, error) {

@@ -55,6 +55,7 @@ func NewWhiteListMatcher() selector.MatchFunc {
 	whiteList["/api.App/SetPerSecondPairInfo"] = struct{}{}
 	whiteList["/api.App/GetPerSecondPairInfo"] = struct{}{}
 	whiteList["/api.App/ReqContract"] = struct{}{}
+	whiteList["/api.App/DfilLog"] = struct{}{}
 	//whiteList["/api.App/PasswordChange"] = struct{}{}
 	//whiteList["/api.App/TokenWithdraw"] = struct{}{}
 	//whiteList["/api.App/GetTrade"] = struct{}{}

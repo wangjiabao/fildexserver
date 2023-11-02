@@ -19,18 +19,22 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationAppDfilLog = "/api.App/DfilLog"
 const OperationAppFilUsdt = "/api.App/FilUsdt"
 const OperationAppGetPerSecondDFilTotal = "/api.App/GetPerSecondDFilTotal"
 const OperationAppGetPerSecondPairInfo = "/api.App/GetPerSecondPairInfo"
 const OperationAppReqContract = "/api.App/ReqContract"
+const OperationAppSetOwnerInfo = "/api.App/SetOwnerInfo"
 const OperationAppSetPerSecondDFilTotal = "/api.App/SetPerSecondDFilTotal"
 const OperationAppSetPerSecondPairInfo = "/api.App/SetPerSecondPairInfo"
 
 type AppHTTPServer interface {
+	DfilLog(context.Context, *DfilLogRequest) (*DfilLogReply, error)
 	FilUsdt(context.Context, *FilUsdtRequest) (*FilUsdtReply, error)
 	GetPerSecondDFilTotal(context.Context, *GetPerSecondDFilTotalRequest) (*GetPerSecondDFilTotalReply, error)
 	GetPerSecondPairInfo(context.Context, *GetPerSecondPairInfoRequest) (*GetPerSecondPairInfoReply, error)
 	ReqContract(context.Context, *ReqContractRequest) (*ReqContractReply, error)
+	SetOwnerInfo(context.Context, *SetOwnerInfoRequest) (*SetOwnerInfoReply, error)
 	SetPerSecondDFilTotal(context.Context, *SetPerSecondDFilTotalRequest) (*SetPerSecondDFilTotalReply, error)
 	SetPerSecondPairInfo(context.Context, *SetPerSecondPairInfoRequest) (*SetPerSecondPairInfoReply, error)
 }
@@ -43,6 +47,8 @@ func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r.GET("/api/app_server/set_per_second_pair_info", _App_SetPerSecondPairInfo0_HTTP_Handler(srv))
 	r.GET("/api/app_server/get_per_second_pair_info", _App_GetPerSecondPairInfo0_HTTP_Handler(srv))
 	r.GET("/api/app_server/req_contract", _App_ReqContract0_HTTP_Handler(srv))
+	r.GET("/api/app_server/dfil_log", _App_DfilLog0_HTTP_Handler(srv))
+	r.POST("/api/app_server/set_owner_info", _App_SetOwnerInfo0_HTTP_Handler(srv))
 }
 
 func _App_FilUsdt0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
@@ -159,11 +165,54 @@ func _App_ReqContract0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) er
 	}
 }
 
+func _App_DfilLog0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DfilLogRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppDfilLog)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DfilLog(ctx, req.(*DfilLogRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*DfilLogReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_SetOwnerInfo0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SetOwnerInfoRequest
+		if err := ctx.Bind(&in.SendBody); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppSetOwnerInfo)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SetOwnerInfo(ctx, req.(*SetOwnerInfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SetOwnerInfoReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type AppHTTPClient interface {
+	DfilLog(ctx context.Context, req *DfilLogRequest, opts ...http.CallOption) (rsp *DfilLogReply, err error)
 	FilUsdt(ctx context.Context, req *FilUsdtRequest, opts ...http.CallOption) (rsp *FilUsdtReply, err error)
 	GetPerSecondDFilTotal(ctx context.Context, req *GetPerSecondDFilTotalRequest, opts ...http.CallOption) (rsp *GetPerSecondDFilTotalReply, err error)
 	GetPerSecondPairInfo(ctx context.Context, req *GetPerSecondPairInfoRequest, opts ...http.CallOption) (rsp *GetPerSecondPairInfoReply, err error)
 	ReqContract(ctx context.Context, req *ReqContractRequest, opts ...http.CallOption) (rsp *ReqContractReply, err error)
+	SetOwnerInfo(ctx context.Context, req *SetOwnerInfoRequest, opts ...http.CallOption) (rsp *SetOwnerInfoReply, err error)
 	SetPerSecondDFilTotal(ctx context.Context, req *SetPerSecondDFilTotalRequest, opts ...http.CallOption) (rsp *SetPerSecondDFilTotalReply, err error)
 	SetPerSecondPairInfo(ctx context.Context, req *SetPerSecondPairInfoRequest, opts ...http.CallOption) (rsp *SetPerSecondPairInfoReply, err error)
 }
@@ -174,6 +223,19 @@ type AppHTTPClientImpl struct {
 
 func NewAppHTTPClient(client *http.Client) AppHTTPClient {
 	return &AppHTTPClientImpl{client}
+}
+
+func (c *AppHTTPClientImpl) DfilLog(ctx context.Context, in *DfilLogRequest, opts ...http.CallOption) (*DfilLogReply, error) {
+	var out DfilLogReply
+	pattern := "/api/app_server/dfil_log"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppDfilLog))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *AppHTTPClientImpl) FilUsdt(ctx context.Context, in *FilUsdtRequest, opts ...http.CallOption) (*FilUsdtReply, error) {
@@ -222,6 +284,19 @@ func (c *AppHTTPClientImpl) ReqContract(ctx context.Context, in *ReqContractRequ
 	opts = append(opts, http.Operation(OperationAppReqContract))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) SetOwnerInfo(ctx context.Context, in *SetOwnerInfoRequest, opts ...http.CallOption) (*SetOwnerInfoReply, error) {
+	var out SetOwnerInfoReply
+	pattern := "/api/app_server/set_owner_info"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAppSetOwnerInfo))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in.SendBody, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
