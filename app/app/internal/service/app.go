@@ -62,12 +62,12 @@ func (a *AppService) SetPerSecondPairInfo(ctx context.Context, req *v1.SetPerSec
 		err      error
 	)
 
-	reserve0, reserve1, err = GetReserves("0xb160f026bA4B5da6dcC2e55aD4c9Cfb426084d93")
+	reserve0, reserve1, err = GetReserves("0x69B930f126C625D4b14048CFBFf4F60ad05aB01D")
 	if nil != err {
 		return nil, err
 	}
 
-	return a.ruc.SetPerSecondPairInfo(ctx, "0xb160f026bA4B5da6dcC2e55aD4c9Cfb426084d93", reserve0, reserve1)
+	return a.ruc.SetPerSecondPairInfo(ctx, "0x69B930f126C625D4b14048CFBFf4F60ad05aB01D", reserve0, reserve1)
 }
 
 func (a *AppService) GetPerSecondPairInfo(ctx context.Context, req *v1.GetPerSecondPairInfoRequest) (*v1.GetPerSecondPairInfoReply, error) {
@@ -109,7 +109,7 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 		var (
 			err error
 		)
-		_, err = managerReward()
+		_, err = managerReward("0x8b026AfaE06A0F86284427EBa48962248D22570b")
 		if nil != err {
 			//fmt.Println("未获取到信息", err)
 		}
@@ -118,6 +118,14 @@ func (a *AppService) ReqContract(ctx context.Context, req *v1.ReqContractRequest
 			err error
 		)
 		_, err = withdrawDFilForManagerFil()
+		if nil != err {
+			//fmt.Println("未获取到信息", err)
+		}
+	} else if "4" == req.ContractType {
+		var (
+			err error
+		)
+		_, err = managerReward("0x44f0F7C774C42dba388FFF55C8057a71D5952044")
 		if nil != err {
 			//fmt.Println("未获取到信息", err)
 		}
@@ -290,7 +298,7 @@ func GetFactoryCheckOwner() ([]string, error) {
 			return balsString, err
 		}
 
-		tokenAddress := common.HexToAddress("0x8505616465ed0ba07Ead8eBA6295a9B16E5a325E")
+		tokenAddress := common.HexToAddress("0xd358b2B0F97Eb87F8094bd19fa354fD2AeeC4917")
 		instance, err := NewTokenFactory(tokenAddress, client)
 		if err != nil {
 			return balsString, err
@@ -327,7 +335,7 @@ func GetExchangeOwnerFilBalance(account string) (string, error) {
 			return balString, err
 		}
 
-		tokenAddress := common.HexToAddress("0x9Ec5b4Ce25dfAE269151f926dBAc7ff10A33a34a")
+		tokenAddress := common.HexToAddress("0x08bC3d9637fAAF3368d034996390194FEbBcB4DF")
 		instance, err := NewTokenExchange(tokenAddress, client)
 		if err != nil {
 			return balString, err
@@ -356,7 +364,7 @@ func createTokenOwner(account string) (string, error) {
 		return "", err
 	}
 
-	tokenAddress := common.HexToAddress("0x8505616465ed0ba07Ead8eBA6295a9B16E5a325E")
+	tokenAddress := common.HexToAddress("0xd358b2B0F97Eb87F8094bd19fa354fD2AeeC4917")
 	instance, err := NewTokenFactory(tokenAddress, client)
 	if err != nil {
 		fmt.Println(err)
@@ -407,7 +415,7 @@ func withdrawDFilForManagerFil() (string, error) {
 		return "", err
 	}
 
-	tokenAddress := common.HexToAddress("0x9Ec5b4Ce25dfAE269151f926dBAc7ff10A33a34a")
+	tokenAddress := common.HexToAddress("0x08bC3d9637fAAF3368d034996390194FEbBcB4DF")
 	instance, err := NewTokenExchange(tokenAddress, client)
 	if err != nil {
 		fmt.Println(err)
@@ -447,7 +455,7 @@ func withdrawDFilForManagerFil() (string, error) {
 	return "", nil
 }
 
-func managerReward() (string, error) {
+func managerReward(contract string) (string, error) {
 
 	requestUrl := "https://api.node.glif.io"
 
@@ -457,7 +465,7 @@ func managerReward() (string, error) {
 		return "", err
 	}
 
-	tokenAddress := common.HexToAddress("0x8b026AfaE06A0F86284427EBa48962248D22570b")
+	tokenAddress := common.HexToAddress(contract)
 	instance, err := NewManagerFil(tokenAddress, client)
 	if err != nil {
 		fmt.Println(err)
@@ -552,7 +560,7 @@ func GetDFilLogs() {
 	}
 
 	// 0x Protocol (ZRX) token address
-	contractAddress := common.HexToAddress("0x8CE4501A420FcAE4B0fBAe73cC07f3A763B3aA7B")
+	contractAddress := common.HexToAddress("0xC1755464Ce8FdC915AC16F9C0dC650346968B358")
 	query := ethereum.FilterQuery{
 		FromBlock: big.NewInt(3309560),
 		ToBlock:   big.NewInt(3309560),
@@ -636,7 +644,7 @@ func GetDFilTotalSupply() (string, error) {
 			return balString, err
 		}
 
-		tokenAddress := common.HexToAddress("0x8CE4501A420FcAE4B0fBAe73cC07f3A763B3aA7B")
+		tokenAddress := common.HexToAddress("0xC1755464Ce8FdC915AC16F9C0dC650346968B358")
 		instance, err := NewDfil(tokenAddress, client)
 		if err != nil {
 			return balString, err
